@@ -3,22 +3,30 @@
 
 ## Write a short comment describing this function
 #Cache the inverse of a matrix
-
-makeCacheMatrix <- function(x = matrix()) {
-	special_matrix<<-x
-	inv_matrix<<-solve(x)
+makeVector <- function(x = matrix()) {
+        m <- NULL
+        set <- function(y) {
+                x <<- y
+                m <<- NULL
+        }
+        get <- function() x
+        setinvmx <- function(invmx) m <<- invmx
+        getinvmx <- function() m
+        list(set = set, get = get, setinvmx = setinvmx, getinvmx = getinvmx)
 }
 
 
 ## Write a short comment describing this function
 #check if the inverse has already been calculated, if so calculate the inverse of the special matrix
 
-cacheSolve <- function(x, ...) {
-	tmp<-solve(special_matrix)
-	if (all(tmp==inv_matrix)) {
-		result=solve(tmp)
-	}
-	print(result)
-
-        ## Return a matrix that is the inverse of 'x'
+cacheinvmx <- function(x, ...) {
+        m <- x$getinvmx()
+        if(!is.null(m)) {
+                message("getting cached data")
+                return(m)
+        }
+        data <- x$get()
+        m <- solve(data, ...)
+        x$setinvmx(m)
+        m
 }
